@@ -1,0 +1,17 @@
+/* @import url('./custom.css'); */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-media-controls {
+  display: none !important;
+}
+
+body{
+  background-color: rgb(39, 37, 37);
+}
