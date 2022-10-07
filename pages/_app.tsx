@@ -7,6 +7,10 @@ import axios from 'axios'
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
+      <Head>
+        <title>Oneplay</title>
+        <link rel="icon" href="/logo2.png" />
+      </Head>
       <Component {...pageProps} />
     </>
   )

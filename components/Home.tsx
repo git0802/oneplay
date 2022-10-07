@@ -47,7 +47,7 @@ const HomeComp = () => {
           ) : (
             <>
               <p className="">Selected files</p>
-              <div className="flex flex-col">
+              <div className="flex flex-col h-[80vh] overflow-auto">
                 {files?.map((file: File, index) => (
                   <FileRow
                     key={index}
