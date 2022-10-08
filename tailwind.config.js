@@ -1,3 +1,5 @@
+const colors = require('tailwindcss/colors')
+
 module.exports = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx}',
@@ -15,6 +17,12 @@ module.exports = {
       desktop: '1280px',
       lg: '1440px',
       xl: '1600px',
+    },
+    colors: {
+      ...colors,
+      'light-slate': {
+        DEFAULT: '#f4f5fe',
+      },
     },
   },
   plugins: [],

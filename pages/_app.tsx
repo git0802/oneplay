@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { PlayerProvider } from '../contexts/PlayerContext'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -11,7 +12,11 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>Oneplay</title>
         <link rel="icon" href="/logo2.png" />
       </Head>
-      <Component {...pageProps} />
+      <div className="bg-stone-900 text-white">
+        <PlayerProvider>
+          <Component {...pageProps} />
+        </PlayerProvider>
+      </div>
     </>
   )
 }

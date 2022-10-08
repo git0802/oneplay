@@ -1,7 +1,8 @@
-import { Slider } from '@mui/material'
-import React, { useEffect } from 'react'
+import { Slider, useMediaQuery } from '@mui/material'
+import React, { useEffect, useState } from 'react'
 import {
   FaBackward,
+  FaCompressArrowsAlt,
   FaFastBackward,
   FaFastForward,
   FaForward,
@@ -17,110 +18,144 @@ import {
   BiVolumeMute,
 } from 'react-icons/bi'
 import { formatTime } from '../../utils'
+import { usePlayer } from '../../contexts/PlayerContext'
+import { IPlayerState } from '../../utils/types'
 
 type Props = {
   element: HTMLVideoElement | HTMLAudioElement | any
+  player: HTMLDivElement | null
   file: File
-  playerState?: any
-  setPlayerState?: any
   togglePlay?: any
+  hide: boolean
 }
 
-const Controls = ({
-  element,
-  file,
-  playerState,
-  togglePlay,
-  setPlayerState,
-}: Props) => {
+const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
+  const {
+    playerState,
+    setPlayerState,
+    handleNext,
+    handlePrev,
+    currentPlaying,
+  } = usePlayer()
+  const [isFront, setFront] = useState(false)
+  const phone = useMediaQuery('(max-width: 500px)')
+
   const handleVideoSpeed = (event: any) => {
     const speed = Number(event.target.value)
     element.playbackRate = speed
-    setPlayerState((prev: any) => ({ ...prev, speed }))
+    setPlayerState({ ...playerState, speed })
   }
 
   const toggleFullScreen = () => {
     if (playerState.isFullScreen && document.fullscreenElement) {
       document.exitFullscreen()
-      setPlayerState((prev: any) => ({ ...prev, isFullScreen: false }))
+      setPlayerState({ ...playerState, isFullScreen: false })
+      setFront(false)
     } else {
-      element.requestFullscreen()
-      setPlayerState((prev: any) => ({ ...prev, isFullScreen: true }))
+      player?.requestFullscreen()
+      setFront(true)
+      setPlayerState({ ...playerState, isFullScreen: true })
     }
   }
 
   const togglePictureInPicture = () => {
     if (!playerState.isPicInPic) {
       element.requestPictureInPicture()
-      setPlayerState((prev: any) => ({ ...prev, isPicInPic: true }))
+      setPlayerState({ ...playerState, isPicInPic: true })
     } else {
       document.exitPictureInPicture()
-      setPlayerState((prev: any) => ({ ...prev, isPicInPic: false }))
+      setPlayerState({ ...playerState, isPicInPic: false })
     }
   }
 
   const handleVolume = (event: any) => {
     const volume = Number(event.target.value)
     element.volume = volume / 100
-    setPlayerState((prev: any) => ({ ...prev, isMuted: false, volume }))
+    setPlayerState({ ...playerState, isMuted: false, volume })
   }
 
   const handleMute = () => {
     if (playerState.isMuted) {
       element.volume = playerState.volume / 100
-      setPlayerState((prev: any) => ({ ...prev, isMuted: false }))
+      setPlayerState({ ...playerState, isMuted: false })
     } else {
       element.volume = 0
-      setPlayerState((prev: any) => ({ ...prev, isMuted: true }))
+      setPlayerState({ ...playerState, isMuted: true })
     }
   }
 
-  useEffect(()=> {
-    // const listener = (e: any)=> {
-    //     if (e.keyCode === 32) {
-    //     //   togglePlay()
-    //     console.log('space pressed');
-    //     setPlayerState({...playerState, isPlaying: !playerState.isPlaying })
-    //     console.log(playerState.isPlaying);
-        
-    //     }
-    // }
-    // document.addEventListener('keydown', listener)
-    // return () => {
-    //   document.removeEventListener('keydown', listener)
-    // }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[])
+  // useEffect(() => {
+  //   const listener = (e: any) => {
+  //     console.log(e.code)
 
+  //     if (e.code === 'Space' || e.code === 'MediaPlayPause') {
+  //       togglePlay()
+  //       setPlayerState({ ...playerState, isPlaying: !playerState.isPlaying })
+  //       console.log(playerState.isPlaying)
+  //     }
+  //   }
+  //   document.addEventListener('keydown', listener)
+  //   return () => {
+  //     document.removeEventListener('keydown', listener)
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
+
+  // useEffect(() => {
+  //   if (playerState.isFullScreen && document.fullscreenElement) {
+  //     setFront(true)
+  //   } else {
+  //     setFront(false)
+  //   }
+  //   console.log('toogle', playerState.isFullScreen)
+
+  // }, [playerState.isFullScreen])
+
+  useEffect(() => {
+    if (file.type.includes('audio')) setFront(false)
+  }, [file.type])
   return (
     <div
-      className=" bottom-0 flex w-full flex-col items-center justify-between bg-gradient-to-t
-     from-black to-black/10 py-2 px-5"
+      className={` bottom-0 flex w-full flex-col items-center justify-between bg-gradient-to-t
+     from-pink-600/30 to-pink-600/10 py-2 px-5 ${
+       isFront ? 'absolute duration-500' : ''
+     } ${hide && isFront ? 'opacity-0' : 'opcity-100'}`}
     >
-      <div className="flex w-full items-center justify-between">
-        <div className="flex w-1/3">
-          <p>{file.name}</p>
+      <div className="flex w-full flex-col items-center justify-between five:flex-row">
+        <div className="flex w-full items-start justify-start overflow-hidden five:w-1/3">
+          <p
+            title={file.name}
+            className="w-full truncate text-clip text-left text-xs five:text-sm"
+          >
+            {file.name}
+          </p>
         </div>
-        <div className="flex items-center justify-center w-1/3">
-          <FaFastBackward className="cursor-pointer text-2xl" />
-          <button className=" mx-3 cursor-pointer rounded-full border-2 p-2">
-            {playerState.isPlaying ? (
-              <FaPause onClick={togglePlay} className="text-xl" />
+        <div className="mt-2 flex items-center justify-center five:mt-0 five:w-1/3">
+          <FaFastBackward
+            onClick={handlePrev}
+            className="cursor-pointer text-sm five:text-xl"
+          />
+          <button
+            onClick={togglePlay}
+            className=" mx-3 cursor-pointer rounded-full border-2 p-1 five:p-2"
+          >
+            {playerState.isPlaying && !element.paused ? (
+              <FaPause className="text-sm five:text-lg" />
             ) : (
-              <FaPlay
-                onClick={togglePlay}
-                className="translate-x-[2px] text-xl"
-              />
+              <FaPlay className="translate-x-[2px] five:text-lg" />
             )}
           </button>
-          <FaFastForward className="cursor-pointer text-2xl" />
+          <FaFastForward
+            onClick={handleNext}
+            className="cursor-pointer text-sm five:text-xl"
+          />
         </div>
-        <div className="flex items-center w-1/3">
-          <div onClick={handleMute} className="">
-            {playerState.isMute ? (
-              <BiVolumeMute className="text-2xl" />
+        <div className="flex items-center justify-end five:w-1/3">
+          <div onClick={handleMute} className="cursor-pointer">
+            {playerState.isMuted ? (
+              <BiVolumeMute className="five:text-2xl" />
             ) : (
-              <BiVolumeFull className="text-2xl" />
+              <BiVolumeFull className="five:text-2xl" />
             )}
           </div>
           <Slider
@@ -133,20 +168,24 @@ const Controls = ({
             aria-label="Small"
             valueLabelDisplay="auto"
           />
-          <div onClick={toggleFullScreen} className="ml-4 cursor-pointer">
-            {playerState.isFullScreen && document.fullscreenElement ? (
-              <BiExitFullscreen className="text-2xl" />
-            ) : (
-              <BiExpand className="text-2xl" />
-            )}
-          </div>
+          {file.type.includes('video') && (
+            <div onClick={toggleFullScreen} className="ml-4 cursor-pointer">
+              {isFront && document.fullscreenElement ? (
+                <FaCompressArrowsAlt className="cursor-pointer five:text-xl" />
+              ) : (
+                <BiExpand className="five:text-2xl" />
+              )}
+            </div>
+          )}
         </div>
       </div>
       <div className="flex w-full items-center">
-        <p>{formatTime(element?.currentTime)}</p>
+        <p className="text-xs five:text-base">
+          {formatTime(element?.currentTime)}
+        </p>
         <Slider
           sx={{ marginX: '2%' }}
-          size="medium"
+          size={phone ? 'small' : 'medium'}
           onChange={(e: any) => {
             element.currentTime = Number(e.target.value)
           }}
@@ -157,7 +196,9 @@ const Controls = ({
           aria-label="Small"
           valueLabelDisplay="auto"
         />
-        <p>{formatTime(element?.duration)}</p>
+        <p className="text-xs five:text-base">
+          {formatTime(element?.duration)}
+        </p>
       </div>
     </div>
   )

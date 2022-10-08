@@ -12,6 +12,6 @@
   display: none !important;
 }
 
-body{
-  background-color: rgb(39, 37, 37);
+.player:hover .player__controls {
+  opacity: 1;
 }
