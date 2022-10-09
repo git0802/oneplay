@@ -1,11 +1,17 @@
-import { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useState } from 'react'
 import { Curr, PlayerContextData } from '../utils/types'
 
 const PlayerContext = createContext({} as PlayerContextData)
 
 export const usePlayer = () => useContext(PlayerContext)
 
-export const PlayerProvider = ({ children }: any) => {
+interface ChildrenProps{
+  
+  children:React.ReactNode;
+  
+}
+
+export const PlayerProvider = ({ children }: ChildrenProps) => {
   const [files, setFiles] = useState<File[]>([])
   const [playerState, setPlayerState] = useState({
     isPlaying: false,
