@@ -121,41 +121,13 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
        isFront ? 'absolute duration-500' : ''
      } ${hide && isFront ? 'opacity-0' : 'opcity-100'}`}
     >
-      <div className="flex w-full flex-col items-center justify-between five:flex-row">
-        <div className="flex w-full items-start justify-start overflow-hidden five:w-1/3">
-          <p
-            title={file.name}
-            className="w-full truncate text-clip text-left text-xs five:text-sm"
-          >
-            {file.name}
-          </p>
-        </div>
-        <div className="mt-2 flex items-center justify-center five:mt-0 five:w-1/3">
-          <FaFastBackward
-            onClick={handlePrev}
-            className="cursor-pointer text-sm five:text-xl"
-          />
-          <button
-            onClick={togglePlay}
-            className=" mx-3 cursor-pointer rounded-full border-2 p-1 five:p-2"
-          >
-            {playerState.isPlaying && !element.paused ? (
-              <FaPause className="text-sm five:text-lg" />
-            ) : (
-              <FaPlay className="translate-x-[2px] five:text-lg" />
-            )}
-          </button>
-          <FaFastForward
-            onClick={handleNext}
-            className="cursor-pointer text-sm five:text-xl"
-          />
-        </div>
-        <div className="flex items-center justify-end five:w-1/3">
+      <div className="flex w-full items-center justify-between ">
+        <div className="flex items-center justify-start overflow-hidden w-1/3">
           <div onClick={handleMute} className="cursor-pointer">
             {playerState.isMuted ? (
-              <BiVolumeMute className="five:text-2xl" />
+              <BiVolumeMute title='muted' className="five:text-2xl" />
             ) : (
-              <BiVolumeFull className="five:text-2xl" />
+              <BiVolumeFull title='volume' className="five:text-2xl" />
             )}
           </div>
           <Slider
@@ -168,12 +140,36 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
             aria-label="Small"
             valueLabelDisplay="auto"
           />
+        </div>
+        <div className="flex items-center justify-center w-1/3">
+          <FaFastBackward
+            title='previous'
+            onClick={handlePrev}
+            className="cursor-pointer text-sm five:text-xl"
+          />
+          <button
+            onClick={togglePlay}
+            className=" mx-3 cursor-pointer rounded-full border-2 p-1 five:p-2"
+          >
+            {playerState.isPlaying && !element.paused ? (
+              <FaPause title='pause' className="text-sm five:text-lg" />
+            ) : (
+              <FaPlay title='play' className="translate-x-[2px] five:text-lg" />
+            )}
+          </button>
+          <FaFastForward
+            title='Next'
+            onClick={handleNext}
+            className="cursor-pointer text-sm five:text-xl"
+          />
+        </div>
+        <div className="flex items-center justify-end w-1/3">
           {file.type.includes('video') && (
             <div onClick={toggleFullScreen} className="ml-4 cursor-pointer">
               {isFront && document.fullscreenElement ? (
-                <FaCompressArrowsAlt className="cursor-pointer five:text-xl" />
+                <FaCompressArrowsAlt title='exit fullscreen' className="cursor-pointer five:text-xl" />
               ) : (
-                <BiExpand className="five:text-2xl" />
+                <BiExpand title='fullscreen' className="five:text-2xl" />
               )}
             </div>
           )}
@@ -192,7 +188,7 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
           // defaultValue={70}
           min={0}
           max={element?.duration}
-          value={playerState.progress}
+          value={Number.isNaN(playerState.progress) ? 0 : playerState.progress}
           aria-label="Small"
           valueLabelDisplay="auto"
         />

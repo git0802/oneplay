@@ -111,6 +111,7 @@ const Player = () => {
         togglePlay={togglePlay}
         hide={hide}
       />
+      <p> {currentPlaying.file.name} </p>
     </div>
   )
 }

@@ -28,8 +28,8 @@ const Navbar = () => {
     <div className="sm:px-11 z-[60] flex h-[60px] w-full items-center justify-between bg-stone-800 p-3 shadow-lg">
       <div className="flex ">
         <div className="flex items-center text-pink-600">
-          <BiPlay className="text-[3em]" />
-          <p className="text-2xl font-extrabold">1Play</p>
+          <BiPlay className="three:text-[3em] text-3xl" />
+          <p className="three:text-2xl font-extrabold">1Play</p>
         </div>
       </div>
       {/* <form onSubmit={subSearch}

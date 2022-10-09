@@ -15,6 +15,7 @@ export const PlayerProvider = ({ children }: any) => {
     isFullScreen: false,
     isPicInPic: false,
     volume: 50,
+    loop: false
   })
   const [currentPlaying, setCurrentPlaying] = useState<Curr>({
     file: files[0],

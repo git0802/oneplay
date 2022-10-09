@@ -22,4 +22,5 @@ export interface IPlayerState {
     isFullScreen: boolean,
     isPicInPic: boolean,
     volume: number,
+    loop: boolean
 }
