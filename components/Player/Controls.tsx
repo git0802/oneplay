@@ -17,12 +17,13 @@ import {
   BiVolumeFull,
   BiVolumeMute,
 } from 'react-icons/bi'
+import { MdRepeat, MdRepeatOne } from 'react-icons/md'
 import { formatTime } from '../../utils'
 import { usePlayer } from '../../contexts/PlayerContext'
 import { IPlayerState } from '../../utils/types'
 
 type Props = {
-  element: HTMLVideoElement | HTMLAudioElement | any
+  element: HTMLMediaElement
   player: HTMLDivElement | null
   file: File
   togglePlay?: any
@@ -36,6 +37,7 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
     handleNext,
     handlePrev,
     currentPlaying,
+    handleLoop
   } = usePlayer()
   const [isFront, setFront] = useState(false)
   const phone = useMediaQuery('(max-width: 500px)')
@@ -60,7 +62,8 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
 
   const togglePictureInPicture = () => {
     if (!playerState.isPicInPic) {
-      element.requestPictureInPicture()
+      const toVidEll = element as HTMLVideoElement
+      toVidEll.requestPictureInPicture()
       setPlayerState({ ...playerState, isPicInPic: true })
     } else {
       document.exitPictureInPicture()
@@ -122,12 +125,12 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
      } ${hide && isFront ? 'opacity-0' : 'opcity-100'}`}
     >
       <div className="flex w-full items-center justify-between ">
-        <div className="flex items-center justify-start overflow-hidden w-1/3">
+        <div className="flex w-1/3 items-center justify-start overflow-hidden">
           <div onClick={handleMute} className="cursor-pointer">
             {playerState.isMuted ? (
-              <BiVolumeMute title='muted' className="five:text-2xl" />
+              <BiVolumeMute title="muted" className="five:text-2xl" />
             ) : (
-              <BiVolumeFull title='volume' className="five:text-2xl" />
+              <BiVolumeFull title="volume" className="five:text-2xl" />
             )}
           </div>
           <Slider
@@ -141,9 +144,9 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
             valueLabelDisplay="auto"
           />
         </div>
-        <div className="flex items-center justify-center w-1/3">
+        <div className="flex w-1/3 items-center justify-center">
           <FaFastBackward
-            title='previous'
+            title="previous"
             onClick={handlePrev}
             className="cursor-pointer text-sm five:text-xl"
           />
@@ -152,24 +155,40 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
             className=" mx-3 cursor-pointer rounded-full border-2 p-1 five:p-2"
           >
             {playerState.isPlaying && !element.paused ? (
-              <FaPause title='pause' className="text-sm five:text-lg" />
+              <FaPause title="pause" className="text-sm five:text-lg" />
             ) : (
-              <FaPlay title='play' className="translate-x-[2px] five:text-lg" />
+              <FaPlay title="play" className="translate-x-[2px] five:text-lg" />
             )}
           </button>
           <FaFastForward
-            title='Next'
+            title="Next"
             onClick={handleNext}
             className="cursor-pointer text-sm five:text-xl"
           />
         </div>
-        <div className="flex items-center justify-end w-1/3">
+        <div className="flex w-1/3 items-center justify-end">
+          <div
+            onClick={() => handleLoop(element)}
+            className="flex text-lg five:text-2xl cursor-pointer"
+          >
+            {playerState.loop === 'none' ? (
+              <MdRepeat title='no repeat' />
+            ) : playerState.loop === 'all' ? (
+              <MdRepeat title='repeat playlist' className="text-pink-600" />
+            ) : (
+              <MdRepeatOne title='repeat this' className="text-pink-600" />
+            )}
+          </div>
+
           {file.type.includes('video') && (
             <div onClick={toggleFullScreen} className="ml-4 cursor-pointer">
               {isFront && document.fullscreenElement ? (
-                <FaCompressArrowsAlt title='exit fullscreen' className="cursor-pointer five:text-xl" />
+                <FaCompressArrowsAlt
+                  title="exit fullscreen"
+                  className="cursor-pointer five:text-xl"
+                />
               ) : (
-                <BiExpand title='fullscreen' className="five:text-2xl" />
+                <BiExpand title="fullscreen" className="five:text-2xl" />
               )}
             </div>
           )}

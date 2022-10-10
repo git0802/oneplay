@@ -17,6 +17,7 @@ const FileRow: React.FC<Props> = ({ file, i, setShowPlayer }) => {
     usePlayer()
 
   const isTheFile = currentPlaying.file?.name === file.name
+
   const handleSelect = () => {
     if (isTheFile) {
       setPlayerState({ ...playerState, isPlaying: !playerState.isPlaying })
@@ -27,6 +28,13 @@ const FileRow: React.FC<Props> = ({ file, i, setShowPlayer }) => {
     }
   }
 
+  // const handleRowClick = () => {
+  //   if(!)
+  //     setShowPlayer(true)
+  //     const url = URL.createObjectURL(file)
+  //     setCurrentPlaying({ file: file, url: url })
+  // }
+
   useEffect(() => {
     if (file.type.includes('video')) setIsVideo(true)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -34,7 +42,8 @@ const FileRow: React.FC<Props> = ({ file, i, setShowPlayer }) => {
 
   return (
     <div
-      className={`cursor-pointr mt-4 flex items-center justify-between
+      onDoubleClick={handleSelect}
+      className={`cursor-pointer mt-4 flex items-center justify-between
      py-2 px-3 hover:bg-stone-800 ${isTheFile && 'bg-stone-800'}`}
     >
       <div className="flex items-center">

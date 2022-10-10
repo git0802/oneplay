@@ -15,7 +15,7 @@ export const PlayerProvider = ({ children }: any) => {
     isFullScreen: false,
     isPicInPic: false,
     volume: 50,
-    loop: false
+    loop: 'none',
   })
   const [currentPlaying, setCurrentPlaying] = useState<Curr>({
     file: files[0],
@@ -28,6 +28,10 @@ export const PlayerProvider = ({ children }: any) => {
     )
     if (index < files.length - 1) {
       const file = files[index + 1]
+      const url = URL.createObjectURL(file)
+      setCurrentPlaying({ file, url })
+    } else if (index === files.length -1 && playerState.loop === 'all') {
+      const file = files[0]
       const url = URL.createObjectURL(file)
       setCurrentPlaying({ file, url })
     }
@@ -44,6 +48,19 @@ export const PlayerProvider = ({ children }: any) => {
     }
   }
 
+  const handleLoop = (el: HTMLMediaElement) => {
+    if (playerState.loop === 'none') {
+      el.loop = false
+      setPlayerState({ ...playerState, loop: 'all' })
+    } else if (playerState.loop === 'all') {
+      el.loop = true
+      setPlayerState({ ...playerState, loop: 'one' })
+    } else {
+      el.loop = false
+      setPlayerState({ ...playerState, loop: 'none' })
+    }
+  }
+
   return (
     <PlayerContext.Provider
       value={{
@@ -55,6 +72,7 @@ export const PlayerProvider = ({ children }: any) => {
         setFiles,
         handleNext,
         handlePrev,
+        handleLoop,
       }}
     >
       {children}

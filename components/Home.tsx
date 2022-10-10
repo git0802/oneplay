@@ -84,7 +84,7 @@ const HomeComp = () => {
                   onClick={() => {}}
                   className="flex h-full w-full flex-col"
                 >
-                  <div className="flex w-full items-center justify-between px-4">
+                  <div className="flex w-full items-center justify-between px-4 py-2">
                     <p className="text-xl font-semibold text-pink-600">
                       Selected files
                     </p>

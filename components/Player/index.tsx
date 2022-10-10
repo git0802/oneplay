@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react'
+import { BiPause, BiPlay } from 'react-icons/bi'
 import { MdAudiotrack } from 'react-icons/md'
 import { usePlayer } from '../../contexts/PlayerContext'
 import Controls from './Controls'
@@ -7,10 +8,13 @@ import Controls from './Controls'
 const Player = () => {
   const videoRef = useRef<HTMLVideoElement>(null)
   const audioRef = useRef<HTMLAudioElement>(null)
-  const [curRef, setCurRef] = React.useState<any>(videoRef?.current)
+  const [curRef, setCurRef] = React.useState<HTMLMediaElement>(
+    videoRef?.current as HTMLMediaElement
+  )
   const [hide, setHide] = useState(false)
   const [timer, setTimer] = useState<number | NodeJS.Timeout>(0)
   const playerRef = useRef<HTMLDivElement>(null)
+  const [showPausePlay, setShowPausePlay] = useState({ state: false, timer: 0 })
   const {
     playerState,
     setPlayerState,
@@ -24,10 +28,15 @@ const Player = () => {
   const videoElement = videoRef?.current
 
   const togglePlay = () => {
+    clearTimeout(showPausePlay.timer)
+    setShowPausePlay({ ...showPausePlay, state: true })
     setPlayerState({
       ...playerState,
       isPlaying: !playerState.isPlaying,
     })
+    setTimeout(() => {
+      setShowPausePlay({ ...showPausePlay, state: false})
+    }, 1000)
   }
 
   const handleOnTimeUpdate = () => {
@@ -40,8 +49,8 @@ const Player = () => {
   }
 
   useEffect(() => {
-    console.log(videoRef?.current)
-    setCurRef(videoRef?.current)
+    console.log(videoRef?.current as HTMLVideoElement)
+    setCurRef(videoRef?.current as HTMLVideoElement)
   }, [videoRef])
 
   useEffect(() => {
@@ -59,9 +68,9 @@ const Player = () => {
 
   useEffect(() => {
     if (isVideo) {
-      setCurRef(videoRef?.current)
+      setCurRef(videoRef?.current as HTMLVideoElement)
     } else {
-      setCurRef(audioRef?.current)
+      setCurRef(audioRef?.current as HTMLAudioElement)
     }
   }, [currentPlaying])
 
@@ -80,30 +89,47 @@ const Player = () => {
       className={`${hide && 'cursor-none'}
       player relative flex aspect-video h-full w-full flex-col text-white`}
     >
-      {isVideo ? (
-        <video
-          poster=""
-          id="video"
-          ref={videoRef}
-          autoPlay
-          className=" my-auto max-h-full"
-          src={currentPlaying.url}
-          onTimeUpdate={handleOnTimeUpdate}
-        />
-      ) : (
-        <>
-          <div className="flex h-[50vh] w-full items-center justify-center bg-stone-800">
-            <MdAudiotrack className="text-[5em]" />
-          </div>
-          <audio
-            className="my-auto"
-            ref={audioRef}
-            onTimeUpdate={handleOnTimeUpdate}
-            src={currentPlaying.url}
+      <div onClick={togglePlay} className="relative flex h-full w-full items-center justify-center">
+        {isVideo ? (
+          <video
+            poster=""
+            id="video"
+            ref={videoRef}
             autoPlay
+            className=" my-auto max-h-full"
+            src={currentPlaying.url}
+            onTimeUpdate={handleOnTimeUpdate}
           />
-        </>
-      )}
+        ) : (
+          <>
+            <div className="flex h-[50vh] w-full items-center justify-center bg-stone-800">
+              <MdAudiotrack className="text-[5em]" />
+            </div>
+            <audio
+              onClick={togglePlay}
+              className="my-auto"
+              ref={audioRef}
+              onTimeUpdate={handleOnTimeUpdate}
+              src={currentPlaying.url}
+              autoPlay
+            />
+          </>
+        )}
+        {showPausePlay.state && (
+          <div className="absolute top-0 left-0 flex h-full w-full items-center justify-center bg-black/10">
+            <div
+              onClick={togglePlay}
+              className="flex items-center justify-center rounded-full bg-stone-800/50 p-2"
+            >
+              {playerState.isPlaying ? (
+                <BiPause className="text-[3em]" />
+              ) : (
+                <BiPlay className="text-[3em] ml-1" />
+              )}
+            </div>
+          </div>
+        )}
+      </div>
       <Controls
         element={curRef}
         player={playerRef?.current}

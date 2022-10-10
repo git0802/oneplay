@@ -12,6 +12,7 @@ export interface PlayerContextData {
     setFiles: React.Dispatch<File[]>,
     handleNext: () => void,
     handlePrev: () => void,
+    handleLoop: (el: HTMLMediaElement) => void
 }
 
 export interface IPlayerState {
@@ -22,5 +23,5 @@ export interface IPlayerState {
     isFullScreen: boolean,
     isPicInPic: boolean,
     volume: number,
-    loop: boolean
+    loop: string
 }
