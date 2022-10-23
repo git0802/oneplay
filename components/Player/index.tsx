@@ -35,7 +35,7 @@ const Player = () => {
       isPlaying: !playerState.isPlaying,
     })
     setTimeout(() => {
-      setShowPausePlay({ ...showPausePlay, state: false})
+      setShowPausePlay({ ...showPausePlay, state: false })
     }, 1000)
   }
 
@@ -74,6 +74,18 @@ const Player = () => {
     }
   }, [currentPlaying])
 
+  useEffect(() => {
+    if (typeof window !== undefined) {
+      window.addEventListener('keydown', (e: KeyboardEvent) => {
+        console.log(e.code)
+        if (e.code === 'KeyD') {
+          e.preventDefault()
+          togglePlay()
+        }
+      })
+    }
+  }, [])
+
   return (
     <div
       onMouseMove={() => {
@@ -89,7 +101,10 @@ const Player = () => {
       className={`${hide && 'cursor-none'}
       player relative flex aspect-video h-full w-full flex-col text-white`}
     >
-      <div onClick={togglePlay} className="relative flex h-full w-full items-center justify-center">
+      <div
+        onClick={togglePlay}
+        className="relative flex h-full w-full items-center justify-center"
+      >
         {isVideo ? (
           <video
             poster=""
@@ -124,7 +139,7 @@ const Player = () => {
               {playerState.isPlaying ? (
                 <BiPause className="text-[3em]" />
               ) : (
-                <BiPlay className="text-[3em] ml-1" />
+                <BiPlay className="ml-1 text-[3em]" />
               )}
             </div>
           </div>

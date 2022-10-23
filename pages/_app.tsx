@@ -8,7 +8,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <title>Oneplay</title>
-        <link rel="icon" href="/logo2.png" />
+        <link rel="icon" href="/favicon1.svg" />
       </Head>
       <div className="bg-stone-900 text-white">
         <PlayerProvider>

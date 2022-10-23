@@ -23,6 +23,9 @@ module.exports = {
       'light-slate': {
         DEFAULT: '#f4f5fe',
       },
+      'main': {
+        DEFAULT: '#ff3f00',
+      }
     },
   },
   plugins: [],

@@ -37,7 +37,7 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
     handleNext,
     handlePrev,
     currentPlaying,
-    handleLoop
+    handleLoop,
   } = usePlayer()
   const [isFront, setFront] = useState(false)
   const phone = useMediaQuery('(max-width: 500px)')
@@ -87,40 +87,13 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
     }
   }
 
-  // useEffect(() => {
-  //   const listener = (e: any) => {
-  //     console.log(e.code)
-
-  //     if (e.code === 'Space' || e.code === 'MediaPlayPause') {
-  //       togglePlay()
-  //       setPlayerState({ ...playerState, isPlaying: !playerState.isPlaying })
-  //       console.log(playerState.isPlaying)
-  //     }
-  //   }
-  //   document.addEventListener('keydown', listener)
-  //   return () => {
-  //     document.removeEventListener('keydown', listener)
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [])
-
-  // useEffect(() => {
-  //   if (playerState.isFullScreen && document.fullscreenElement) {
-  //     setFront(true)
-  //   } else {
-  //     setFront(false)
-  //   }
-  //   console.log('toogle', playerState.isFullScreen)
-
-  // }, [playerState.isFullScreen])
-
   useEffect(() => {
     if (file.type.includes('audio')) setFront(false)
   }, [file.type])
   return (
     <div
       className={` bottom-0 flex w-full flex-col items-center justify-between bg-gradient-to-t
-     from-pink-600/30 to-pink-600/10 py-2 px-5 ${
+     from-main/30 to-main/10 py-2 px-5 ${
        isFront ? 'absolute duration-500' : ''
      } ${hide && isFront ? 'opacity-0' : 'opcity-100'}`}
     >
@@ -139,7 +112,7 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
             max={100}
             size="small"
             value={playerState.volume}
-            onChange={(e) => handleVolume(e)}
+            onChange={(e: Event) => handleVolume(e)}
             aria-label="Small"
             valueLabelDisplay="auto"
           />
@@ -169,14 +142,14 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
         <div className="flex w-1/3 items-center justify-end">
           <div
             onClick={() => handleLoop(element)}
-            className="flex text-lg five:text-2xl cursor-pointer"
+            className="flex cursor-pointer text-lg five:text-2xl"
           >
             {playerState.loop === 'none' ? (
-              <MdRepeat title='no repeat' />
+              <MdRepeat title="no repeat" />
             ) : playerState.loop === 'all' ? (
-              <MdRepeat title='repeat playlist' className="text-pink-600" />
+              <MdRepeat title="repeat playlist" className="text-main" />
             ) : (
-              <MdRepeatOne title='repeat this' className="text-pink-600" />
+              <MdRepeatOne title="repeat this" className="text-main" />
             )}
           </div>
 
@@ -206,7 +179,7 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
           }}
           // defaultValue={70}
           min={0}
-          max={element?.duration}
+          max={Number.isNaN(element?.duration) ? 0 : element?.duration}
           value={Number.isNaN(playerState.progress) ? 0 : playerState.progress}
           aria-label="Small"
           valueLabelDisplay="auto"
