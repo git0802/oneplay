@@ -54,7 +54,7 @@ const Player = () => {
   }, [videoRef])
 
   useEffect(() => {
-    playerState.isPlaying ? videoElement?.play() : videoElement?.pause()
+    playerState.isPlaying ? curRef?.play() : curRef?.pause()
   }, [playerState.isPlaying, videoElement])
 
   useEffect(() => {
