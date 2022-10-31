@@ -87,71 +87,73 @@ const Player = () => {
   }, [])
 
   return (
-    <div
-      onMouseMove={() => {
-        setHide(false)
-        clearTimeout(timer as number)
-        const timeout = setTimeout(() => {
-          setHide(true)
-        }, 2000)
-        setTimer(timeout)
-      }}
-      // onMouseLeave={() => clearTimeout(timer as number)}
-      ref={playerRef}
-      className={`${hide && 'cursor-none'}
-      player relative flex aspect-video h-full w-full flex-col text-white`}
-    >
+    <div className="flex w-full flex-col">
       <div
-        onClick={togglePlay}
-        className="relative flex h-full w-full items-center justify-center"
+        onMouseMove={() => {
+          setHide(false)
+          clearTimeout(timer as number)
+          const timeout = setTimeout(() => {
+            setHide(true)
+          }, 2000)
+          setTimer(timeout)
+        }}
+        // onMouseLeave={() => clearTimeout(timer as number)}
+        ref={playerRef}
+        className={`${hide && 'cursor-none'}
+      player relative flex aspect-video h-full w-full flex-col text-white`}
       >
-        {isVideo ? (
-          <video
-            poster=""
-            id="video"
-            ref={videoRef}
-            autoPlay
-            className=" my-auto max-h-full"
-            src={currentPlaying.url}
-            onTimeUpdate={handleOnTimeUpdate}
-          />
-        ) : (
-          <>
-            <div className="flex h-[50vh] w-full items-center justify-center bg-stone-800">
-              <MdAudiotrack className="text-[5em]" />
-            </div>
-            <audio
-              onClick={togglePlay}
-              className="my-auto"
-              ref={audioRef}
-              onTimeUpdate={handleOnTimeUpdate}
-              src={currentPlaying.url}
+        <div
+          onClick={togglePlay}
+          className="relative flex h-full w-full items-center justify-center"
+        >
+          {isVideo ? (
+            <video
+              poster=""
+              id="video"
+              ref={videoRef}
               autoPlay
+              className=" my-auto max-h-full"
+              src={currentPlaying.url}
+              onTimeUpdate={handleOnTimeUpdate}
             />
-          </>
-        )}
-        {showPausePlay.state && (
-          <div className="absolute top-0 left-0 flex h-full w-full items-center justify-center bg-black/10">
-            <div
-              onClick={togglePlay}
-              className="flex items-center justify-center rounded-full bg-stone-800/50 p-2"
-            >
-              {playerState.isPlaying ? (
-                <BiPause className="text-[3em]" />
-              ) : (
-                <BiPlay className="ml-1 text-[3em]" />
-              )}
+          ) : (
+            <>
+              <div className="flex h-[50vh] w-full items-center justify-center bg-stone-800">
+                <MdAudiotrack className="text-[5em]" />
+              </div>
+              <audio
+                onClick={togglePlay}
+                className="my-auto"
+                ref={audioRef}
+                onTimeUpdate={handleOnTimeUpdate}
+                src={currentPlaying.url}
+                autoPlay
+              />
+            </>
+          )}
+          {showPausePlay.state && (
+            <div className="absolute top-0 left-0 flex h-full w-full items-center justify-center bg-black/10">
+              <div
+                onClick={togglePlay}
+                className="flex items-center justify-center rounded-full bg-stone-800/50 p-2"
+              >
+                {playerState.isPlaying ? (
+                  <BiPause className="text-[3em]" />
+                ) : (
+                  <BiPlay className="ml-1 text-[3em]" />
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
+        <Controls
+          element={curRef}
+          player={playerRef?.current}
+          file={currentPlaying.file}
+          togglePlay={togglePlay}
+          hide={hide}
+        />
       </div>
-      <Controls
-        element={curRef}
-        player={playerRef?.current}
-        file={currentPlaying.file}
-        togglePlay={togglePlay}
-        hide={hide}
-      />
       <p> {currentPlaying.file.name} </p>
     </div>
   )

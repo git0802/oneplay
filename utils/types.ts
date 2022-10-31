@@ -25,3 +25,8 @@ export interface IPlayerState {
     volume: number,
     loop: string
 }
+
+export type PlayList = {
+    path: string;
+    fileNames: string[]; 
+}

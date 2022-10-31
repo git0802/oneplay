@@ -40,6 +40,7 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
     handleLoop,
   } = usePlayer()
   const [isFront, setFront] = useState(false)
+  const [hovered, setHovered] = useState(false)
   const phone = useMediaQuery('(max-width: 500px)')
 
   const handleVideoSpeed = (event: any) => {
@@ -88,12 +89,22 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
   }
 
   useEffect(() => {
+    const textSpan: Element | null = document.querySelector(
+      '.MuiSlider-valueLabelLabel'
+    )
+    console.log(textSpan)
+    if (textSpan) {
+      textSpan.textContent = formatTime(element?.currentTime)
+    }
+  }, [element?.currentTime])
+
+  useEffect(() => {
     if (file.type.includes('audio')) setFront(false)
   }, [file.type])
   return (
     <div
       className={` bottom-0 flex w-full flex-col items-center justify-between bg-gradient-to-t
-     from-main/30 to-main/10 py-2 px-5 ${
+     from-stone-400/30 to-stone-400/10 py-2 px-5 ${
        isFront ? 'absolute duration-500' : ''
      } ${hide && isFront ? 'opacity-0' : 'opcity-100'}`}
     >
@@ -108,7 +119,7 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
           </div>
           <Slider
             min={0}
-            sx={{ width: 100, marginLeft: 2 }}
+            sx={{ width: 100, marginLeft: 2, color: '#ff3f00' }}
             max={100}
             size="small"
             value={playerState.volume}
@@ -167,17 +178,29 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
           )}
         </div>
       </div>
-      <div className="flex w-full items-center">
+      <div
+        onMouseOver={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        className="flex w-full items-center"
+      >
         <p className="text-xs five:text-base">
           {formatTime(element?.currentTime)}
         </p>
         <Slider
-          sx={{ marginX: '2%' }}
+          sx={{
+            marginX: '2%',
+            color: '#ff3f00',
+            '& .MuiSlider-thumb': {
+              display: hovered ? 'flex' : 'none',
+              width: 10,
+              height: 10,
+            },
+          }}
           size={phone ? 'small' : 'medium'}
           onChange={(e: any) => {
             element.currentTime = Number(e.target.value)
           }}
-          // defaultValue={70}
+          // defaultValue={70} .MuiSlider-valueLabelLabel
           min={0}
           max={Number.isNaN(element?.duration) ? 0 : element?.duration}
           value={Number.isNaN(playerState.progress) ? 0 : playerState.progress}
