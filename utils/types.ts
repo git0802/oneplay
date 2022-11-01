@@ -13,6 +13,15 @@ export interface PlayerContextData {
     handleNext: () => void,
     handlePrev: () => void,
     handleLoop: (el: HTMLMediaElement) => void
+    handleShuffle: ()=> void;
+    showPlayer: boolean;
+    setShowPlayer: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface AppContextData {
+    appState: IAppState,
+    playList?: PlayList;
+    setPlayList?: React.Dispatch<PlayList>;
 }
 
 export interface IPlayerState {
@@ -24,9 +33,16 @@ export interface IPlayerState {
     isPicInPic: boolean,
     volume: number,
     loop: string
+    shuffle: boolean;
 }
 
 export type PlayList = {
     path: string;
     fileNames: string[]; 
+}
+
+export interface IAppState {
+    isDark?: boolean;
+    isOffline: boolean;
+    isLocal: boolean;
 }

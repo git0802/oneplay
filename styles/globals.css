@@ -15,3 +15,34 @@
 .player:hover .player__controls {
   opacity: 1;
 }
+body{
+  background-color: #030305;
+}
+
+.bg{
+  background: linear-gradient(-30deg, rgba(202, 57, 0, 0.614) 0%, rgba(0, 0, 0, 0.996) 10%, rgba(0, 0, 0, 0.996) 80%, rgba(202, 57, 0, 0.614) 100%);
+}
+
+.introh{
+  background: linear-gradient(100deg, rgba(202, 57, 0, 1) 0%, rgba(159, 162, 165, 0.996) 20%, rgba(202, 57, 0, 1) 50%, rgba(159, 162, 165, 0.996) 70%, rgba(202, 57, 0, 1) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-background-clip: text;
+}
+
+.btnstarted::after{
+  content: ' ';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  bottom: 0;
+  z-index: -1;
+}
+
+.btnstarted:hover::after{
+  width: 100%;
+  background: linear-gradient(90deg, rgba(202, 57, 0, 1) 0%, rgb(229, 107, 59) 100%);
+  transition: all 0.5s;
+}

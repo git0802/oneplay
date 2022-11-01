@@ -27,3 +27,11 @@ export const formatBytes = (bytes: number, decimals = 2) => {
     const unit = units[index];
     return `${size.toFixed(decimals)} ${unit}`;
 }
+
+export const getRandomIndex: (p: any, ct: any)=> number = (max: number, lastIndeces: number[]) => {
+    const index = Math.floor(Math.random() * max);
+    if (lastIndeces.includes(index)) {
+        return getRandomIndex(max, lastIndeces);
+    }
+    return index;
+}

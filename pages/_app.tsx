@@ -2,20 +2,17 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { PlayerProvider } from '../contexts/PlayerContext'
+import AppProvider from '../contexts/AppContext'
+import { Analytics } from '@vercel/analytics/react'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
-      <Head>
-        <title>Oneplay</title>
-        <link rel="icon" href="/favicon1.svg" />
-      </Head>
-      <div className="bg-stone-900 text-white">
-        <PlayerProvider>
-          <Component {...pageProps} />
-        </PlayerProvider>
-      </div>
-    </>
+    <AppProvider>
+      <PlayerProvider>
+        <Component {...pageProps} />
+        <Analytics />
+      </PlayerProvider>
+    </AppProvider>
   )
 }
 

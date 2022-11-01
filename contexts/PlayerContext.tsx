@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from 'react'
-import { Curr, PlayerContextData } from '../utils/types'
+import { getRandomIndex } from '../utils';
+import { Curr, IPlayerState, PlayerContextData } from '../utils/types'
 
 const PlayerContext = createContext({} as PlayerContextData)
 
@@ -13,7 +14,7 @@ interface ChildrenProps{
 
 export const PlayerProvider = ({ children }: ChildrenProps) => {
   const [files, setFiles] = useState<File[]>([])
-  const [playerState, setPlayerState] = useState({
+  const [playerState, setPlayerState] = useState<IPlayerState>({
     isPlaying: false,
     progress: 0,
     speed: 1,
@@ -22,24 +23,34 @@ export const PlayerProvider = ({ children }: ChildrenProps) => {
     isPicInPic: false,
     volume: 50,
     loop: 'none',
+    shuffle: false
   })
+  const [playedIndex, setPlayedIndex] = useState<number[]>([])
   const [currentPlaying, setCurrentPlaying] = useState<Curr>({
     file: files[0],
     url: '',
   })
+  const [showPlayer, setShowPlayer] = useState(false)
 
   const handleNext = () => {
     const index = files.findIndex(
       (file) => file.name === currentPlaying.file.name
     )
-    if (index < files.length - 1) {
-      const file = files[index + 1]
+    const nextIndex = playerState.shuffle? getRandomIndex(files.length, playedIndex) : index + 1
+    if (index < files.length - 1 || playerState.shuffle) {
+      const file = files[nextIndex]
       const url = URL.createObjectURL(file)
       setCurrentPlaying({ file, url })
     } else if (index === files.length -1 && playerState.loop === 'all') {
       const file = files[0]
       const url = URL.createObjectURL(file)
       setCurrentPlaying({ file, url })
+    }
+
+    if(playedIndex.length === files.length){
+      setPlayedIndex([])
+    } else {
+      setPlayedIndex([...playedIndex, nextIndex])
     }
   }
 
@@ -67,6 +78,10 @@ export const PlayerProvider = ({ children }: ChildrenProps) => {
     }
   }
 
+  const handleShuffle = ()=> {
+    setPlayerState({ ...playerState, shuffle: !playerState.shuffle })
+  }
+
   return (
     <PlayerContext.Provider
       value={{
@@ -79,6 +94,9 @@ export const PlayerProvider = ({ children }: ChildrenProps) => {
         handleNext,
         handlePrev,
         handleLoop,
+        handleShuffle,
+        showPlayer,
+        setShowPlayer
       }}
     >
       {children}

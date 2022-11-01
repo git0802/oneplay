@@ -13,6 +13,7 @@ import {
   BiExitFullscreen,
   BiExpand,
   BiFullscreen,
+  BiShuffle,
   BiVolume,
   BiVolumeFull,
   BiVolumeMute,
@@ -37,6 +38,7 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
     handleNext,
     handlePrev,
     currentPlaying,
+    handleShuffle,
     handleLoop,
   } = usePlayer()
   const [isFront, setFront] = useState(false)
@@ -92,7 +94,6 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
     const textSpan: Element | null = document.querySelector(
       '.MuiSlider-valueLabelLabel'
     )
-    console.log(textSpan)
     if (textSpan) {
       textSpan.textContent = formatTime(element?.currentTime)
     }
@@ -151,9 +152,15 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
           />
         </div>
         <div className="flex w-1/3 items-center justify-end">
+          <button
+          onClick={handleShuffle}
+          className={`cursor-pointer text-xl ${playerState.shuffle? 'text-main' : 'text-gray-100'}`}
+          >
+            <BiShuffle />
+          </button>
           <div
             onClick={() => handleLoop(element)}
-            className="flex cursor-pointer text-lg five:text-2xl"
+            className="flex cursor-pointer text-lg five:text-2xl ml-2"
           >
             {playerState.loop === 'none' ? (
               <MdRepeat title="no repeat" />
