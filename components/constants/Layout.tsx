@@ -12,10 +12,9 @@ const Layout = ({ children, title }: LayoutProps) => {
   return (
     <>
       <Head>
-        <title>{title??'Oneplay'}</title>
-        <link rel="shortcut icon" href="favicon.svg" type="image/x-icon" />
+        <title>{title ?? 'Oneplay'}</title>
       </Head>
-      <div className="bg flex h-screen flex-col bg-[#030305] text-white">
+      <div className="bg relative flex h-screen flex-col overflow-x-hidden bg-[#030305] text-white">
         <Navbar />
         <div className="flex w-full">
           <Navigator />

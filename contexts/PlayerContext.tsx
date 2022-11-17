@@ -8,7 +8,7 @@ export const usePlayer = () => useContext(PlayerContext)
 
 interface ChildrenProps{
   
-  children:React.ReactNode;
+  children: React.ReactNode ;
   
 }
 
