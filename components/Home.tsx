@@ -1,10 +1,8 @@
 import React, { ChangeEventHandler, useEffect, useState } from 'react'
 import { BiFile } from 'react-icons/bi'
 import FileRow from './FileRow'
-import Navbar from './constants/NavBar'
 import Player from './Player'
 import Dropzone from 'react-dropzone'
-import { Curr } from '../utils/types'
 import { usePlayer } from '../contexts/PlayerContext'
 
 const HomeComp = () => {

@@ -1,5 +1,5 @@
 export interface Curr {
-    file: File,
+    file: File | null,
     url: string
 }
 

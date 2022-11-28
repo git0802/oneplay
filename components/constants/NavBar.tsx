@@ -25,7 +25,7 @@ const Navbar = () => {
   }
 
   return (
-    <div className="sm:px-11 z-[60] flex h-[60px] w-full items-center justify-between bg-[#030305]/90 border-b-2 border-main/20 backdrop-blur-lg p-3 shadow-xl">
+    <div className="sm:px-11 z-[60] flex h-[60px] w-full items-center justify-between bg-[#030305]/90 border-b-2 sticky top-0 border-main/20 backdrop-blur-lg p-3 shadow-xl">
       <div className="flex ">
         <div className="flex w-[100px] cursor-pointer object-cover">
           <img src="/images/weblogo.svg" alt="" />
