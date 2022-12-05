@@ -23,7 +23,7 @@ const Player = () => {
     handleNext,
   } = usePlayer()
 
-  const isVideo = currentPlaying.file.type.includes('video')
+  const isVideo = currentPlaying?.file?.type.includes('video')
 
   const videoElement = videoRef?.current
 
@@ -149,12 +149,12 @@ const Player = () => {
         <Controls
           element={curRef}
           player={playerRef?.current}
-          file={currentPlaying.file}
+          file={currentPlaying.file!}
           togglePlay={togglePlay}
           hide={hide}
         />
       </div>
-      <p> {currentPlaying.file.name} </p>
+      <p> {currentPlaying.file?.name} </p>
     </div>
   )
 }

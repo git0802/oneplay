@@ -4,6 +4,7 @@ import FileRow from './FileRow'
 import Player from './Player'
 import Dropzone from 'react-dropzone'
 import { usePlayer } from '../contexts/PlayerContext'
+import Multimedia from './constants/Multimedia'
 
 const HomeComp = () => {
   const { files, setFiles, showPlayer, setShowPlayer } = usePlayer()
@@ -41,7 +42,9 @@ const HomeComp = () => {
                   // htmlFor="files"
                   className="flex flex-col items-center justify-center"
                 >
-                  <BiFile className="text-[10em]" />
+                 <div className='max-w-[200px] flex'>
+										<Multimedia />
+									</div>
                   <p className="text-center">
                     Select a file or drag and drop multiple files here
                   </p>
