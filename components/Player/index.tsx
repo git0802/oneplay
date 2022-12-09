@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { BiPause, BiPlay } from 'react-icons/bi'
 import { MdAudiotrack } from 'react-icons/md'
 import { usePlayer } from '../../contexts/PlayerContext'
+import useKeyPress from '../../utils/hooks/usePress'
 import Controls from './Controls'
 
 const Player = () => {
@@ -11,6 +12,7 @@ const Player = () => {
   const [curRef, setCurRef] = React.useState<HTMLMediaElement>(
     videoRef?.current as HTMLMediaElement
   )
+  const [eventSet, setEventSet] = useState(false)
   const [hide, setHide] = useState(false)
   const [timer, setTimer] = useState<number | NodeJS.Timeout>(0)
   const playerRef = useRef<HTMLDivElement>(null)
@@ -22,6 +24,7 @@ const Player = () => {
     setCurrentPlaying,
     handleNext,
   } = usePlayer()
+  const pauseKey = useKeyPress(' ');
 
   const isVideo = currentPlaying?.file?.type.includes('video')
 
@@ -75,16 +78,11 @@ const Player = () => {
   }, [currentPlaying])
 
   useEffect(() => {
-    if (typeof window !== undefined) {
-      window.addEventListener('keydown', (e: KeyboardEvent) => {
-        console.log(e.code)
-        if (e.code === 'KeyD') {
-          e.preventDefault()
-          togglePlay()
-        }
-      })
+    if (pauseKey) {
+      console.log('pause key');
+      togglePlay()
     }
-  }, [])
+  }, [pauseKey])
 
   return (
     <div className="flex w-full flex-col">

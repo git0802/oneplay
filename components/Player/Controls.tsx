@@ -105,7 +105,7 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
   return (
     <div
       className={` bottom-0 flex w-full flex-col items-center justify-between bg-gradient-to-t
-     from-stone-400/30 to-stone-400/10 py-2 px-5 ${
+     from-orange-400/30 to-orange-400/10 py-2 px-5 ${
        isFront ? 'absolute duration-500' : ''
      } ${hide && isFront ? 'opacity-0' : 'opcity-100'}`}
     >

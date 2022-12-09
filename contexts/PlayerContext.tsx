@@ -34,7 +34,7 @@ export const PlayerProvider = ({ children }: ChildrenProps) => {
 
   const handleNext = () => {
     const index = files.findIndex(
-      (file) => file.name === currentPlaying.file.name
+      (file) => file.name === currentPlaying?.file?.name
     )
     const nextIndex = playerState.shuffle? getRandomIndex(files.length, playedIndex) : index + 1
     if (index < files.length - 1 || playerState.shuffle) {
@@ -56,7 +56,7 @@ export const PlayerProvider = ({ children }: ChildrenProps) => {
 
   const handlePrev = () => {
     const index = files.findIndex(
-      (file) => file.name === currentPlaying.file.name
+      (file) => file.name === currentPlaying.file?.name
     )
     if (index > 0) {
       const file = files[index - 1]
