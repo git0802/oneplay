@@ -84,6 +84,7 @@ const Player = () => {
       togglePlay()
     }
     if(nextKey) handleNext();
+    if(prevKey) handlePrev();
   }, [pauseKey, nextKey, prevKey])
 
   return (

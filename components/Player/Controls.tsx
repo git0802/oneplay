@@ -16,6 +16,7 @@ import {
 import { MdRepeat, MdRepeatOne } from 'react-icons/md'
 import { formatTime } from '../../utils'
 import { usePlayer } from '../../contexts/PlayerContext'
+import useKeyPress from '../../utils/hooks/usePress'
 
 type Props = {
   element: HTMLMediaElement
@@ -36,6 +37,8 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
   } = usePlayer()
   const [isFront, setFront] = useState(false)
   const [hovered, setHovered] = useState(false)
+  const fullKey = useKeyPress('f')
+  const muteKey = useKeyPress('m')
   const phone = useMediaQuery('(max-width: 500px)')
 
 
@@ -76,6 +79,12 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
       textSpan.textContent = formatTime(element?.currentTime)
     }
   }, [element?.currentTime])
+
+  useEffect(()=> {
+    if(fullKey) toggleFullScreen();
+    if(muteKey) handleMute();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[fullKey, muteKey])
 
   useEffect(() => {
     if (file.type.includes('audio')) setFront(false)
