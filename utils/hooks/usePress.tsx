@@ -1,12 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react'
 
-export type KeyProps = { key: KeyboardEvent['code'] }
+interface KeyProps extends KeyboardEvent {
+  key: KeyboardEvent['code']
+}
 
-export default function useKeyPress(targetKey: KeyProps["key"]) {
+export default function useKeyPress(targetKey: KeyProps['key']) {
   const [keyPressed, setKeyPressed] = useState(false)
 
-  function downHandler({ key }: KeyProps) {
+  function downHandler({ key, preventDefault }: KeyProps) {
+    // preventDefault()
     console.log(key, targetKey)
     if (key === targetKey) {
       setKeyPressed(true)
@@ -14,7 +17,8 @@ export default function useKeyPress(targetKey: KeyProps["key"]) {
   }
 
   // If released key is our target key then set to false
-  const upHandler = ({ key }: KeyProps) => {
+  const upHandler = ({ key, preventDefault }: KeyProps) => {
+    // preventDefault();
     if (key === targetKey) {
       setKeyPressed(false)
     }

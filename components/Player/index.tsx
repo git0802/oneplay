@@ -12,7 +12,6 @@ const Player = () => {
   const [curRef, setCurRef] = React.useState<HTMLMediaElement>(
     videoRef?.current as HTMLMediaElement
   )
-  const [eventSet, setEventSet] = useState(false)
   const [hide, setHide] = useState(false)
   const [timer, setTimer] = useState<number | NodeJS.Timeout>(0)
   const playerRef = useRef<HTMLDivElement>(null)
@@ -21,10 +20,12 @@ const Player = () => {
     playerState,
     setPlayerState,
     currentPlaying,
-    setCurrentPlaying,
     handleNext,
+    handlePrev
   } = usePlayer()
   const pauseKey = useKeyPress(' ');
+  const nextKey = useKeyPress('n')
+  const prevKey = useKeyPress('p')
 
   const isVideo = currentPlaying?.file?.type.includes('video')
 
@@ -82,7 +83,8 @@ const Player = () => {
       console.log('pause key');
       togglePlay()
     }
-  }, [pauseKey])
+    if(nextKey) handleNext();
+  }, [pauseKey, nextKey, prevKey])
 
   return (
     <div className="flex w-full flex-col">

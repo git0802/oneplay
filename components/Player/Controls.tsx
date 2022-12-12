@@ -1,27 +1,21 @@
 import { Slider, useMediaQuery } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
-  FaBackward,
   FaCompressArrowsAlt,
   FaFastBackward,
   FaFastForward,
-  FaForward,
   FaPause,
   FaPlay,
 } from 'react-icons/fa'
 import {
-  BiExitFullscreen,
   BiExpand,
-  BiFullscreen,
   BiShuffle,
-  BiVolume,
   BiVolumeFull,
   BiVolumeMute,
 } from 'react-icons/bi'
 import { MdRepeat, MdRepeatOne } from 'react-icons/md'
 import { formatTime } from '../../utils'
 import { usePlayer } from '../../contexts/PlayerContext'
-import { IPlayerState } from '../../utils/types'
 
 type Props = {
   element: HTMLMediaElement
@@ -37,7 +31,6 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
     setPlayerState,
     handleNext,
     handlePrev,
-    currentPlaying,
     handleShuffle,
     handleLoop,
   } = usePlayer()
@@ -45,11 +38,6 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
   const [hovered, setHovered] = useState(false)
   const phone = useMediaQuery('(max-width: 500px)')
 
-  const handleVideoSpeed = (event: any) => {
-    const speed = Number(event.target.value)
-    element.playbackRate = speed
-    setPlayerState({ ...playerState, speed })
-  }
 
   const toggleFullScreen = () => {
     if (playerState.isFullScreen && document.fullscreenElement) {
@@ -63,16 +51,6 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
     }
   }
 
-  const togglePictureInPicture = () => {
-    if (!playerState.isPicInPic) {
-      const toVidEll = element as HTMLVideoElement
-      toVidEll.requestPictureInPicture()
-      setPlayerState({ ...playerState, isPicInPic: true })
-    } else {
-      document.exitPictureInPicture()
-      setPlayerState({ ...playerState, isPicInPic: false })
-    }
-  }
 
   const handleVolume = (event: any) => {
     const volume = Number(event.target.value)
