@@ -4,7 +4,7 @@ import { FaLinkedin, FaGithubSquare, FaFacebookSquare, FaInstagramSquare } from 
 
 const Footer = () => {
   return (
-    <div className="mt-4 flex items-center tablet:ml-4 justify-center">
+    <div className="mt-4 absolute bottom-0 w-full flex items-center tablet:ml-4 justify-center">
       <a
         className="flex items-center px-2"
         href="https://www.linkedin.com/in/ishimwe-ndungutse-charles-079418227/"

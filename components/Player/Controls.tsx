@@ -7,12 +7,7 @@ import {
   FaPause,
   FaPlay,
 } from 'react-icons/fa'
-import {
-  BiExpand,
-  BiShuffle,
-  BiVolumeFull,
-  BiVolumeMute,
-} from 'react-icons/bi'
+import { BiExpand, BiShuffle, BiVolumeFull, BiVolumeMute } from 'react-icons/bi'
 import { MdRepeat, MdRepeatOne } from 'react-icons/md'
 import { formatTime } from '../../utils'
 import { usePlayer } from '../../contexts/PlayerContext'
@@ -41,7 +36,6 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
   const muteKey = useKeyPress('m')
   const phone = useMediaQuery('(max-width: 500px)')
 
-
   const toggleFullScreen = () => {
     if (playerState.isFullScreen && document.fullscreenElement) {
       document.exitFullscreen()
@@ -53,7 +47,6 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
       setPlayerState({ ...playerState, isFullScreen: true })
     }
   }
-
 
   const handleVolume = (event: any) => {
     const volume = Number(event.target.value)
@@ -80,11 +73,11 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
     }
   }, [element?.currentTime])
 
-  useEffect(()=> {
-    if(fullKey) toggleFullScreen();
-    if(muteKey) handleMute();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[fullKey, muteKey])
+  useEffect(() => {
+    if (fullKey) toggleFullScreen()
+    if (muteKey) handleMute()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fullKey, muteKey])
 
   useEffect(() => {
     if (file.type.includes('audio')) setFront(false)
@@ -100,14 +93,23 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
         <div className="flex w-1/3 items-center justify-start overflow-hidden">
           <div onClick={handleMute} className="cursor-pointer">
             {playerState.isMuted ? (
-              <BiVolumeMute title="muted" className="five:text-2xl" />
+              <BiVolumeMute title="muted" className="text-sm" />
             ) : (
-              <BiVolumeFull title="volume" className="five:text-2xl" />
+              <BiVolumeFull title="volume" className="text-sm" />
             )}
           </div>
           <Slider
             min={0}
-            sx={{ width: 100, marginLeft: 2, color: '#ff3f00' }}
+            sx={{
+              width: 100,
+              marginLeft: 2,
+              color: '#ff3f00',
+              '& .MuiSlider-thumb': {
+                display: hovered ? 'flex' : 'none',
+                width: 6,
+                height: 6,
+              },
+            }}
             max={100}
             size="small"
             value={playerState.volume}
@@ -120,34 +122,36 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
           <FaFastBackward
             title="previous"
             onClick={handlePrev}
-            className="cursor-pointer text-sm five:text-xl"
+            className="cursor-pointer text-sm"
           />
           <button
             onClick={togglePlay}
             className=" mx-3 cursor-pointer rounded-full border-2 p-1 five:p-2"
           >
             {playerState.isPlaying && !element.paused ? (
-              <FaPause title="pause" className="text-sm five:text-lg" />
+              <FaPause title="pause" className="text-xs" />
             ) : (
-              <FaPlay title="play" className="translate-x-[2px] five:text-lg" />
+              <FaPlay title="play" className="translate-x-[2px] text-xs" />
             )}
           </button>
           <FaFastForward
             title="Next"
             onClick={handleNext}
-            className="cursor-pointer text-sm five:text-xl"
+            className="cursor-pointer text-sm"
           />
         </div>
         <div className="flex w-1/3 items-center justify-end">
           <button
-          onClick={handleShuffle}
-          className={`cursor-pointer text-xl ${playerState.shuffle? 'text-main' : 'text-gray-100'}`}
+            onClick={handleShuffle}
+            className={`cursor-pointer text-xl ${
+              playerState.shuffle ? 'text-main' : 'text-gray-100'
+            }`}
           >
-            <BiShuffle />
+            <BiShuffle className="text-xs" />
           </button>
           <div
             onClick={() => handleLoop(element)}
-            className="flex cursor-pointer text-lg five:text-2xl ml-2"
+            className="ml-2 flex cursor-pointer text-lg text-sm"
           >
             {playerState.loop === 'none' ? (
               <MdRepeat title="no repeat" />
@@ -163,10 +167,10 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
               {isFront && document.fullscreenElement ? (
                 <FaCompressArrowsAlt
                   title="exit fullscreen"
-                  className="cursor-pointer five:text-xl"
+                  className="cursor-pointer"
                 />
               ) : (
-                <BiExpand title="fullscreen" className="five:text-2xl" />
+                <BiExpand title="fullscreen" className="text-sm" />
               )}
             </div>
           )}
@@ -177,20 +181,18 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
         onMouseLeave={() => setHovered(false)}
         className="flex w-full items-center"
       >
-        <p className="text-xs five:text-base">
-          {formatTime(element?.currentTime)}
-        </p>
+        <p className="text-[0.7em]">{formatTime(element?.currentTime)}</p>
         <Slider
           sx={{
             marginX: '2%',
             color: '#ff3f00',
             '& .MuiSlider-thumb': {
               display: hovered ? 'flex' : 'none',
-              width: 10,
-              height: 10,
+              width: 6,
+              height: 6,
             },
           }}
-          size={phone ? 'small' : 'medium'}
+          size={'small'}
           onChange={(e: any) => {
             element.currentTime = Number(e.target.value)
           }}
@@ -201,9 +203,7 @@ const Controls = ({ element, file, togglePlay, player, hide }: Props) => {
           aria-label="Small"
           valueLabelDisplay="auto"
         />
-        <p className="text-xs five:text-base">
-          {formatTime(element?.duration)}
-        </p>
+        <p className="text-[0.7em]">{formatTime(element?.duration)}</p>
       </div>
     </div>
   )

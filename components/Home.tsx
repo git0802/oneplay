@@ -1,8 +1,10 @@
 import React, { ChangeEventHandler, useEffect, useState } from 'react'
 import { BiFile } from 'react-icons/bi'
 import FileRow from './FileRow'
+import Navbar from './constants/NavBar'
 import Player from './Player'
 import Dropzone from 'react-dropzone'
+import { Curr } from '../utils/types'
 import { usePlayer } from '../contexts/PlayerContext'
 import Multimedia from './constants/Multimedia'
 
@@ -21,8 +23,8 @@ const HomeComp = () => {
   }
 
   return (
-    <div className="flex h-[90vh] w-full flex-col overflow-auto pt-11 xtab:flex-row">
-      <div className="flex h-full flex-col items-center justify-center xtab:w-1/2">
+    <div className="flex h-[92vh] w-full flex-col overflow-auto pt-11 xtab:flex-row">
+      <div className="flex h-full flex-col items-center justify-center xtab:w-3/5">
         {showPlayer ? (
           <div className="flex w-full items-center justify-center">
             <Player />
@@ -42,9 +44,9 @@ const HomeComp = () => {
                   // htmlFor="files"
                   className="flex flex-col items-center justify-center"
                 >
-                 <div className='max-w-[200px] flex'>
-										<Multimedia />
-									</div>
+                  <div className="flex max-w-[200px]">
+                    <Multimedia />
+                  </div>
                   <p className="text-center">
                     Select a file or drag and drop multiple files here
                   </p>
@@ -65,7 +67,7 @@ const HomeComp = () => {
         )}
       </div>
       <span className="h-full w-[1px] bg-blue-400/10"></span>
-      <div className="flex h-full flex-col items-center p-4 xtab:w-1/2">
+      <div className="flex h-full flex-col items-center px-4 pt-4 xtab:w-2/5">
         {files.length === 0 ? (
           <p className="flex h-full w-full items-center justify-center text-2xl">
             No Selected files
@@ -83,14 +85,14 @@ const HomeComp = () => {
                 className="flex h-full w-full flex-col"
               >
                 <div className="flex w-full items-center justify-between px-4 py-2">
-                  <p className="text-xl font-semibold text-main">
+                  <p className="text-sm font-semibold text-main">
                     Selected files
                   </p>
                   <label
                     htmlFor="files"
-                    className="flex cursor-pointer items-center rounded-md bg-main px-2"
+                    className="flex cursor-pointer items-center rounded-md bg-main px-2 text-xs"
                   >
-                    <span className="-translate-y-[1px] text-2xl">+</span>
+                    <span className="-translate-y-[1px] text-lg">+</span>
                     <span className="ml-2">ADD</span>
                   </label>
                   <input
@@ -104,7 +106,7 @@ const HomeComp = () => {
                     onChange={onFileInputChange}
                   />
                 </div>
-                <div className="flex h-[80vh] w-full flex-col overflow-auto">
+                <div className="flex h-[80vh] w-full flex-col overflow-y-auto">
                   {files?.map((file: File, index) => (
                     <FileRow
                       key={index}

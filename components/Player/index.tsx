@@ -80,7 +80,10 @@ const Player = () => {
 
   useEffect(() => {
     if (pauseKey) {
-      console.log('pause key');
+      window.scrollTo({
+        top: 0,
+        left: 0,
+      })
       togglePlay()
     }
     if(nextKey) handleNext();
@@ -136,7 +139,7 @@ const Player = () => {
             <div className="absolute top-0 left-0 flex h-full w-full items-center justify-center bg-black/10">
               <div
                 onClick={togglePlay}
-                className="flex items-center justify-center rounded-full bg-stone-800/50 p-2"
+                className="flex items-center duration-300 justify-center rounded-full bg-stone-800/50 p-2"
               >
                 {playerState.isPlaying ? (
                   <BiPause className="text-[3em]" />
@@ -155,7 +158,7 @@ const Player = () => {
           hide={hide}
         />
       </div>
-      <p> {currentPlaying.file?.name} </p>
+      <p className='text-xs font-semibold mt-2'> {currentPlaying.file?.name} </p>
     </div>
   )
 }

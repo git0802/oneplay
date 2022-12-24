@@ -10,7 +10,6 @@ export default function useKeyPress(targetKey: KeyProps['key']) {
 
   function downHandler({ key, preventDefault }: KeyProps) {
     // preventDefault()
-    console.log(key, targetKey)
     if (key === targetKey) {
       setKeyPressed(true)
     }

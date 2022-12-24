@@ -24,7 +24,7 @@ const Layout = ({ children, title, linear }: LayoutProps) => {
           <Navigator />
           {children}
         </div>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </>
   )
